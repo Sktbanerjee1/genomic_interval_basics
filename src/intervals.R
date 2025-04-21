@@ -54,44 +54,12 @@ countOverlapsSimple = function(query, database) {
 # @param gr1  First GRanges object
 # @param gr2  Second GRanges object
 # @return The Jaccard score (as numeric)
-calculateJaccardScore <- function(gr1, gr2) {
-  # 1) sanity check
-  if (!inherits(gr1, "GRanges") || !inherits(gr2, "GRanges")) {
-    stop("Inputs must be GRanges objects")
-  }
+calculateJaccardScore = function(gr1, gr2){
 
-  # 2) convert from 0‑based [start,end) → 1‑based closed IRanges for half‑open math
-  gr1_ho <- GenomicRanges::GRanges(
-    seqnames = seqnames(gr1),
-    ranges   = IRanges::IRanges(start(gr1) + 1, end(gr1))
-  )
-  gr2_ho <- GenomicRanges::GRanges(
-    seqnames = seqnames(gr2),
-    ranges   = IRanges::IRanges(start(gr2) + 1, end(gr2))
-  )
+  jaccard_score <- (length(intersect(gr1, gr2)) / length(union(gr1, gr2)))
 
-  # 3) merge only truly overlapping (not abutting) intervals
-  gr1r <- GenomicRanges::reduce(gr1_ho, ignore.strand = TRUE, min.gapwidth = 0)
-  gr2r <- GenomicRanges::reduce(gr2_ho, ignore.strand = TRUE, min.gapwidth = 0)
-
-  # 4) compute the intersection
-  intr <- GenomicRanges::intersect(gr1r, gr2r, ignore.strand = TRUE)
-
-  # 5) half‑open widths = end – start
-  w1 <- sum(end(gr1r) - start(gr1r))
-  w2 <- sum(end(gr2r) - start(gr2r))
-  wi <- sum(end(intr)  - start(intr))
-
-  # 6) union width by formula
-  uw <- w1 + w2 - wi
-  if (uw == 0) return(0)
-
-  # 7) Jaccard = |A∩B| / |A∪B|
-  wi / uw
+  return(jaccard_score)
 }
-
-
-
 
 # Calculate pairwise Jaccard similarity among several interval sets
 #

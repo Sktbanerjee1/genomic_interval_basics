@@ -8,7 +8,7 @@ icon = list(
 )
 
 message("Testing Basic intervals tasks")
-source("src/intervals_2.R")
+source("src/intervals.R")
 
 message("Testing countOverlapsSimple")
 
