@@ -1,11 +1,14 @@
 library("testit")
+# Clean the env
+rm(list = ls())
+
 icon = list(
 	success = "\U2713",
 	fail = "\U2717"
 )
 
 message("Testing Basic intervals tasks")
-source("src/intervals.R")
+source("src/intervals_2.R")
 
 message("Testing countOverlapsSimple")
 
@@ -27,7 +30,7 @@ message(icon$success, " Passed countOverlapsSimple basic tests!")
 
 suppressMessages(suppressWarnings(library("GenomicRanges")))
 
-# Now we'll generate some random data to ensure that your 
+# Now we'll generate some random data to ensure that your
 # countOverlapsSimple function is working
 for (i in 1:50) {
 	randdb = randomGRanges()
